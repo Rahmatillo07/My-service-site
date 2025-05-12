@@ -1,0 +1,143 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My service</title>
+    <link href="{% static 'css/index.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet"/>
+    <link rel="icon" type="image/png" href="{% static 'img/img.png' %}">
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+
+    <style>
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            min-width: 250px;
+            background-color: #4BB543;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+            animation: fadeInOut 4s forwards;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: sans-serif;
+        }
+        .toast.error {
+            background-color: #ff4444;
+        }
+        .toast .close-btn {
+            margin-left: 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(-20px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="landing_page">
+    <div class="responsive-container-block big-container">
+        <img class="bg-img" id="iq5bf" src="{% static 'img/laptop.jpg' %}">
+        <div class="responsive-container-block container">
+
+            <div class="responsive-cell-block wk-desk-6 wk-ipadp-6 wk-tab-12 wk-mobile-12 left-one">
+                <div class="content-box">
+                    <p class="text-blk section-head">MY SERVICES</p>
+                    <ul class="services-list">
+                        <li>📱 Create Telegram BOT</li>
+                        <li>🌐 Custom Website</li>
+                        <li>⚙️ Backend API with (Django DRF)</li>
+                    </ul>
+                    <div class="icons-container">
+                        <a href="https://t.me/thank_gold" style="  cursor: pointer;" class="share-icon">
+                            <i class="fab fa-telegram"></i>
+
+                        </a>
+                        <a href="https://instagram.com/krrahmatillo" style="  cursor: pointer;" class="share-icon">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a style="  cursor: pointer;" class="share-icon">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="https://github.com/Rahmatillo07" style="  cursor: pointer;" class="share-icon">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="responsive-cell-block wk-ipadp-6 wk-tab-12 wk-mobile-12 wk-desk-6 right-one" id="i1zj">
+
+                {% if messages %}
+                {% for message in messages %}
+                <div class="toast {% if message.tags %}{{ message.tags }}{% endif %}">
+                    {{ message }}
+                    <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                </div>
+                {% endfor %}
+                {% endif %}
+
+                <form id="myForm" class="form-box" method="post" action="">
+                    {% csrf_token %}
+                    <div class="container-block form-wrapper">
+                        <p class="text-blk contactus-head">Order service</p>
+                        <p class="text-blk contactus-subhead">I will respond to you within 24 hours.</p>
+                        <div class="responsive-container-block">
+                            <div class="responsive-cell-block wk-tab-12 wk-mobile-12 wk-desk-12 wk-ipadp-12">
+                                <input class="input" name="name" placeholder="Name" required>
+                            </div>
+                            <div class="responsive-cell-block wk-tab-12 wk-mobile-12 wk-desk-6 wk-ipadp-6 emial">
+                                <input class="input" id="telegram" name="telegram" placeholder="Telegram username"
+                                       required>
+                            </div>
+                            <div class="responsive-cell-block wk-tab-12 wk-mobile-12 wk-desk-12 wk-ipadp-12">
+                                <textarea class="textinput" name="message" placeholder="Type message here"
+                                          required></textarea>
+                            </div>
+                        </div>
+                        <button class="submit-btn" type="submit">Send message</button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    // Toastlarni avtomatik yo‘qotish
+    setTimeout(function () {
+        const toasts = document.querySelectorAll('.toast');
+        toasts.forEach(toast => {
+            toast.style.opacity = '0';
+            toast.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => toast.remove(), 500);
+        });
+    }, 3000);
+
+document.getElementById("myForm").addEventListener("submit", function(event) {
+    var username = document.getElementById("telegram").value.trim();
+    var regex = /^@?[a-zA-Z0-9_]{5,32}$/;
+
+    if (!regex.test(username)) {
+        alert("❌ Invalid Telegram username. It must be 5–32 characters, and contain only letters, numbers, and underscores.");
+        event.preventDefault(); // Yuborishni to‘xtatish
+    }
+});
+</script>
+</body>
+</html>
